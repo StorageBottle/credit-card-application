@@ -32,6 +32,12 @@ html, body {
   z-index: 0;
 }
 
+.hero-text {
+  max-width: 62%;
+  position: relative;
+  z-index: 2;
+}
+
 .hero-text h1 {
   color: #fff;
   font-size: 30px;
@@ -46,13 +52,14 @@ html, body {
   line-height: 1.7;
 }
 
-.hero-art { width: 116px; }
+.hero-art { width: 0; }
 
 .mini-shield {
   position: absolute;
-  top: 22px;
-  right: -4px;
-  width: 180px;
+  top: 20px;
+  right: -6px;
+  width: 34%;
+  max-width: 150px;
   aspect-ratio: 96 / 118;
   filter: drop-shadow(0 8px 20px rgba(230,120,0,0.35));
 }
@@ -60,24 +67,38 @@ html, body {
 
 .mini-card {
   position: absolute;
-  right: 104px;
-  bottom: 56px;
-  width: 90px;
-  height: 60px;
+  right: 14%;
+  bottom: 54px;
+  width: 20%;
+  max-width: 84px;
+  min-width: 60px;
+  aspect-ratio: 3 / 2;
   background: linear-gradient(150deg, rgba(255,255,255,0.94), rgba(255,238,214,0.88));
   border-radius: 9px;
   box-shadow: 0 6px 14px rgba(200,90,0,0.22);
   opacity: 0.7;
 }
 .mini-card .chip {
-  position: absolute; left: 9px; top: 11px;
-  width: 15px; height: 11px;
+  position: absolute; left: 10%; top: 18%;
+  width: 16%; height: 18%;
   background: #FF8A3C; border-radius: 2px;
 }
-.mini-card .line { position: absolute; height: 4px; background: #fff; border-radius: 2px; }
-.mini-card .l1 { left: 32px; top: 14px; width: 56px; }
-.mini-card .l2 { left: 12px; top: 36px; width: 78px; }
-.mini-card .dot { position: absolute; right: 8px; bottom: 7px; width: 8px; height: 8px; border-radius: 50%; background: #F0512C; }
+.mini-card .line { position: absolute; height: 7%; background: #fff; border-radius: 99px; }
+.mini-card .l1 { left: 36%; top: 22%; width: 56%; }
+.mini-card .l2 { left: 11%; top: 55%; width: 76%; }
+.mini-card .dot { position: absolute; right: 8%; bottom: 12%; width: 9%; aspect-ratio: 1; border-radius: 50%; background: #F0512C; }
+
+/* 窄屏进一步收紧：缩小标题、副标题字号，留出图形空间 */
+@media (max-width: 380px) {
+  .hero-text p { font-size: 12.5px; }
+}
+@media (max-width: 340px) {
+  .hero-text p { font-size: 11.5px; }
+}
+@media (max-width: 360px) {
+  .hero { padding: 38px 18px 78px; }
+  .hero-text h1 { font-size: 26px; }
+}
 
 /* ============ 表单卡片区域 ============ */
 .sheet {
