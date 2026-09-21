@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>credit-card-application</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="phone">
+
+  <!-- ================= 第一页：个人资料 ================= -->
+  <section id="page1" class="page page-personal">
+    <div class="hero">
+      <div class="hero-text">
+        <h1>申请信用卡</h1>
+        <p>您的相关信息仅用于信用卡办理，<br>请放心填写~</p>
+      </div>
+      <div class="hero-art">
+        <div class="mini-shield">
+          <svg viewBox="12 12 96 118" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <defs>
+              <linearGradient id="shieldRim" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#FFDF60"/>
+                <stop offset="1" stop-color="#FFC445"/>
+              </linearGradient>
+              <linearGradient id="shieldFace" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#FFD24C"/>
+                <stop offset="1" stop-color="#FF9C30"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 22 Q12 12 22 12 L98 12 Q108 12 108 22 L108 74 C108 96 88 114 60 130 C32 114 12 96 12 74 Z" fill="url(#shieldRim)"/>
+            <path d="M18 26 Q18 18 26 18 L94 18 Q102 18 102 26 L102 73 C102 92 84 107 60 124 C36 107 18 92 18 73 Z" fill="url(#shieldFace)"/>
+            <path d="M42 66 L55 82 L82 48" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="mini-card">
+          <span class="chip"></span>
+          <span class="line l1"></span>
+          <span class="line l2"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <div class="field select-field" id="bankField">
+        <div class="select-box readonly">
+          <span class="select-value filled">工商银行</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <div class="section-title">完善您的个人资料</div>
+
+      <div class="field">
+        <input type="text" id="name" placeholder="请填写您的真实姓名" autocomplete="name">
+        <div class="err-msg">请填写您的真实姓名</div>
+      </div>
+      <div class="field">
+        <input type="tel" id="phone" maxlength="11" placeholder="请填写您的手机号码" autocomplete="tel">
+        <div class="err-msg">请填写您的手机号码</div>
+      </div>
+      <div class="field">
+        <input type="text" id="idcard" maxlength="18" placeholder="请填写您的身份证号码" autocomplete="off">
+        <div class="err-msg">请填写您的身份证号码</div>
+      </div>
+
+      <div class="section-title">您的信用卡想寄往哪里</div>
+
+      <div class="field">
+        <input type="text" id="address" placeholder="您的信用卡收货地址" autocomplete="street-address">
+        <div class="err-msg">请填写您的信用卡收货地址</div>
+      </div>
+    </div>
+
+    <div class="btn-area">
+      <button class="confirm-btn" id="btnStep1">确认</button>
+    </div>
+
+    <div class="agreement-row">
+      <label class="agree-label">
+        <span class="radio" id="agreeRadio"></span>
+        <span>已阅读并同意</span>
+        <a class="agree-link" id="openAgreement">《用户协议》</a>
+      </label>
+    </div>
+  </section>
+
+  <!-- ================= 第二页：财务信息 ================= -->
+  <section id="page2" class="page page-finance hidden">
+    <div class="card">
+      <div class="section-title finance-title">财务信息</div>
+
+      <div class="field select-field" data-key="cardInUse">
+        <div class="select-box">
+          <span class="select-value placeholder">在用信用卡</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的在用信用卡</div>
+      </div>
+
+      <div class="field select-field" data-key="bankCardCount">
+        <div class="select-box">
+          <span class="select-value placeholder">银行卡张数</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的银行卡张数</div>
+      </div>
+
+      <div class="field select-field" data-key="maxQuota">
+        <div class="select-box">
+          <span class="select-value placeholder">单卡最大额度</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的单卡最大额度</div>
+      </div>
+
+      <div class="field select-field" data-key="houseType">
+        <div class="select-box">
+          <span class="select-value placeholder">房屋类型</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的房屋类型</div>
+      </div>
+
+      <div class="field select-field" data-key="socialSecurity">
+        <div class="select-box">
+          <span class="select-value placeholder">是否有社保</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您是否有社保</div>
+      </div>
+
+      <div class="field select-field" data-key="carType">
+        <div class="select-box">
+          <span class="select-value placeholder">车辆类型</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的车辆类型</div>
+      </div>
+
+      <div class="field select-field" data-key="loanStatus">
+        <div class="select-box">
+          <span class="select-value placeholder">贷款状况</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的贷款状况</div>
+      </div>
+
+      <div class="field select-field" data-key="loanCount">
+        <div class="select-box">
+          <span class="select-value placeholder">贷款笔数</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择您的贷款笔数</div>
+      </div>
+
+      <div class="field select-field" data-key="overdue">
+        <div class="select-box">
+          <span class="select-value placeholder">有无逾期记录</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择有无逾期记录</div>
+      </div>
+
+      <div class="field select-field" data-key="lastApply">
+        <div class="select-box">
+          <span class="select-value placeholder">最后一次申请信用卡时间</span>
+          <svg class="arrow" viewBox="0 0 16 16"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="err-msg">请选择最后一次申请信用卡时间</div>
+      </div>
+    </div>
+
+    <div class="btn-area">
+      <button class="confirm-btn" id="btnStep2">确认</button>
+    </div>
+  </section>
+
+  <!-- ================= 第三页：额度结果 ================= -->
+  <section id="page3" class="page page-result hidden">
+    <div class="card result-card">
+      <h2 class="result-title">初审已通过!</h2>
+      <p class="result-sub">恭喜，初始核发：</p>
+      <div class="quota-row">
+        <div class="quota-item">
+          <div class="quota-label">固定额度</div>
+          <div class="quota-value"><span id="quotaFixed">--</span>元</div>
+        </div>
+        <div class="quota-divider"></div>
+        <div class="quota-item">
+          <div class="quota-label">专享额度</div>
+          <div class="quota-value"><span id="quotaExtra">--</span>元</div>
+        </div>
+      </div>
+      <p class="quota-note">专享额度根据贡献值有所浮动，以短信通知为准</p>
+    </div>
+
+    <div class="card tips-card">
+      <p>申卡温馨提示:</p>
+      <p>1、申卡请尽量用数据网络</p>
+      <p>2、用干净的手机号码作为联系方式</p>
+      <p>3、能不查征信就不要去查征信</p>
+      <p>4、只要银行拒户则不用再次尝试</p>
+      <p>5、信息尽量真实不要美化过度</p>
+      <p>6、如所在城市没有该银行，那么邮寄地址可以填写省城，下卡后关注邮寄信息，派送时候可让快递员邮寄到你所在城市</p>
+      <p>7、本次查询结果仅供参考，与查询人最终申请信用卡结果无关</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- 用户协议弹窗 -->
+<div class="modal-mask hidden" id="agreementModal">
+  <div class="modal">
+    <div class="modal-header">用户协议</div>
+    <div class="modal-body" id="agreementBody"></div>
+    <div class="modal-footer">
+      <button class="modal-btn" id="agreeBtn">阅读并同意</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
