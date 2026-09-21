@@ -252,6 +252,9 @@ html, body {
   color: #666;
   cursor: pointer;
 }
+.agree-label.agree-error { color: #e34d4d; }
+.agree-label.agree-error .radio { border-color: #e34d4d; }
+.agree-label.agree-error .agree-link { color: #e34d4d; }
 .radio {
   width: 17px; height: 17px;
   border-radius: 50%;
@@ -351,6 +354,13 @@ html, body {
 .modal-footer {
   padding: 12px 20px calc(16px + env(safe-area-inset-bottom));
   flex-shrink: 0;
+}
+.warn-body {
+  text-align: center;
+  padding: 22px 24px 18px;
+  font-size: 15px;
+  color: #444;
+  line-height: 1.7;
 }
 .modal-btn {
   width: 100%;

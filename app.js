@@ -32,6 +32,7 @@ var agreeLabel = $(".agree-label");
 agreeLabel.addEventListener("click", function () {
   agreeChecked = !agreeChecked;
   agreeLabel.classList.toggle("checked", agreeChecked);
+  agreeLabel.classList.remove("agree-error");
 });
 
 /* ---------- 用户协议弹窗 ---------- */
@@ -114,6 +115,21 @@ modal.addEventListener("click", function (e) {
   if (e.target === modal) modal.classList.add("hidden");
 });
 
+/* ---------- 未勾选协议提示弹窗（div 实现，非 alert） ---------- */
+var agreeWarnModal = $("#agreeWarnModal");
+
+function showAgreeWarn() {
+  agreeWarnModal.classList.remove("hidden");
+}
+
+$("#agreeWarnBtn").addEventListener("click", function () {
+  agreeWarnModal.classList.add("hidden");
+});
+
+agreeWarnModal.addEventListener("click", function (e) {
+  if (e.target === agreeWarnModal) agreeWarnModal.classList.add("hidden");
+});
+
 /* ---------- 第一页校验 ---------- */
 function markError(fieldEl, on) {
   fieldEl.classList.toggle("error", on);
@@ -153,7 +169,11 @@ function validateStep1() {
     ok = false; if (!firstBad) firstBad = $("#idcard");
   }
 
-  if (!agreeChecked) ok = false;
+  if (!agreeChecked) {
+    showAgreeWarn();
+    agreeLabel.classList.add("agree-error");
+    ok = false;
+  }
 
   if (firstBad) firstBad.scrollIntoView({ behavior: "smooth", block: "center" });
   return ok;
