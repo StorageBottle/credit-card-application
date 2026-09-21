@@ -135,6 +135,73 @@ function markError(fieldEl, on) {
   fieldEl.classList.toggle("error", on);
 }
 
+/* =====================================================
+ * 身份证号校验（GB 11643 / ISO 7064:1983 MOD 11-2）
+ * 校验项：长度与字符、地区编码、出生日期、18 位校验码
+ * 返回 { valid: Boolean, reason: String }
+ * ===================================================== */
+var ID_WEIGHTS = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+var ID_CHECK_CODES = ["1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"];
+
+function isRealDate(y, m, d) {
+  var yy = parseInt(y, 10), mm = parseInt(m, 10), dd = parseInt(d, 10);
+  if (isNaN(yy) || isNaN(mm) || isNaN(dd)) return false;
+  if (mm < 1 || mm > 12 || dd < 1 || dd > 31) return false;
+  /* 年限合理性：不早于 150 年前、不晚于今天 */
+  var now = new Date();
+  if (yy < now.getFullYear() - 150 || yy > now.getFullYear()) return false;
+  var dt = new Date(yy, mm - 1, dd);
+  if (dt.getFullYear() !== yy || dt.getMonth() !== mm - 1 || dt.getDate() !== dd) return false;
+  return dt <= now;
+}
+
+function validateIdCard(input) {
+  var id = String(input == null ? "" : input).trim().toUpperCase();
+  if (id === "") return { valid: false, reason: "empty" };
+
+  /* ---- 18 位身份证 ---- */
+  if (id.length === 18) {
+    if (!/^\d{17}[\dX]$/.test(id)) return { valid: false, reason: "format" };
+
+    /* 地区编码：前两位为省级代码（11-82），前六位不可为全 0 */
+    var area = id.slice(0, 6);
+    var prov = parseInt(id.slice(0, 2), 10);
+    if (area === "000000" || prov < 11 || prov > 82) return { valid: false, reason: "area" };
+
+    /* 出生日期：第 7-14 位 YYYYMMDD */
+    if (!isRealDate(id.slice(6, 10), id.slice(10, 12), id.slice(12, 14))) {
+      return { valid: false, reason: "birthday" };
+    }
+
+    /* 校验码：前 17 位加权求和后对 11 取模 */
+    var sum = 0;
+    for (var i = 0; i < 17; i++) sum += parseInt(id.charAt(i), 10) * ID_WEIGHTS[i];
+    if (ID_CHECK_CODES[sum % 11] !== id.charAt(17)) return { valid: false, reason: "checksum" };
+
+    return { valid: true, reason: "ok" };
+  }
+
+  /* ---- 15 位旧版身份证（无校验码） ---- */
+  if (id.length === 15) {
+    if (!/^\d{15}$/.test(id)) return { valid: false, reason: "format" };
+    if (!isRealDate(String(1900 + parseInt(id.slice(6, 8), 10)), id.slice(8, 10), id.slice(10, 12))) {
+      return { valid: false, reason: "birthday" };
+    }
+    return { valid: true, reason: "ok" };
+  }
+
+  return { valid: false, reason: "length" };
+}
+
+var ID_ERR_TEXT = {
+  empty: "请填写您的身份证号码",
+  length: "身份证号码应为 15 位或 18 位",
+  format: "身份证号码只能包含数字，18 位末位可为 X",
+  area: "身份证号码地区编码不正确",
+  birthday: "身份证号码中的出生日期不正确",
+  checksum: "身份证号码校验位错误，请核对后重新输入"
+};
+
 function validateStep1() {
   var ok = true;
   var firstBad = null;
@@ -160,12 +227,14 @@ function validateStep1() {
     ok = false; if (!firstBad) firstBad = $("#phone");
   }
 
-  /* 身份证格式（18位，末位可为X） */
+  /* 身份证号：算法校验（地区码 + 出生日期 + 校验位） */
+  var idField = $("#idcard").closest(".field");
+  var idMsg = idField.querySelector(".err-msg");
   var idc = $("#idcard").value.trim();
-  if (idc !== "" && !/^(\d{17}[\dXx]|\d{15})$/.test(idc)) {
-    var idf = $("#idcard").closest(".field");
-    idf.querySelector(".err-msg").textContent = "请填写正确的身份证号码";
-    markError(idf, true);
+  var idRes = validateIdCard(idc);
+  idMsg.textContent = ID_ERR_TEXT[idRes.reason] || ID_ERR_TEXT.format;
+  if (!idRes.valid) {
+    markError(idField, true);
     ok = false; if (!firstBad) firstBad = $("#idcard");
   }
 
